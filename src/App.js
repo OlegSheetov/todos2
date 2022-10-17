@@ -1,25 +1,47 @@
-import logo from './logo.svg';
-import './App.css';
+import { Component } from "react";
+import Todolist from './components/TodoList/Todolist'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const date1 = new Date(2021, 7, 19, 14)
+const date2 = new Date(2021, 7, 19, 15, 23)
+
+const initialData = [
+  {
+    title: 'Изучить реакт',
+    desc: 'Да поскорее!',
+    image: '',
+    done: true,
+    createdAt: date1.toLocaleDateString(),
+    key: date1.getTime()
+  },
+  {
+    title: 'Написать первое React-приложение',
+    desc: 'Список запланированных дел',
+    image: '',
+    done: false,
+    createdAt: date2.toLocaleDateString(),
+    key: date2.getTime()
+  }
+]
+
+export default class App extends Component {
+  constructor(props) {
+    super()
+    this.data = initialData
+  }
+  render() {
+    return (
+      <div>
+        <nav className="navbar is-light">
+          <div className="navbar-brand">
+            <span className="navbar-item is-uppercase">
+              Todos
+            </span>
+          </div>
+        </nav>
+        <main className="content px-6 mt-6">
+          <Todolist list={this.data}/>
+        </main>
+      </div>
+    )
+  }
 }
-
-export default App;
