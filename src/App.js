@@ -27,6 +27,13 @@ export default class App extends Component {
   constructor(props) {
     super()
     this.data = initialData
+    this.setDone = this.setDone.bind(this)
+  }
+  setDone(key) {
+    const deed = this.data.find((current) => current.key === key)
+    if (deed) {
+      deed.done = true
+    }
   }
   render() {
     return (
@@ -39,7 +46,7 @@ export default class App extends Component {
           </div>
         </nav>
         <main className="content px-6 mt-6">
-          <Todolist list={this.data}/>
+          <Todolist list={this.data} setDone={this.setDone} />
         </main>
       </div>
     )
