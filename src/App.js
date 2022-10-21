@@ -1,7 +1,7 @@
 import { Component } from "react";
 import TodoList from './TodoList'
 import TodoAdd from './TodoAdd'
-
+import { HashRouter, Route, Routes, NavLink } from "react-router-dom";
 const date1 = new Date(2021, 7, 19, 14)
 const date2 = new Date(2021, 7, 19, 15, 23)
 
@@ -27,11 +27,16 @@ const initialData = [
 export default class App extends Component {
   constructor(props) {
     super()
-    this.state = { data : initialData }
+    this.state = { data: initialData, showMenu: false }
     this.setDone = this.setDone.bind(this)
     this.delete = this.delete.bind(this)
     this.add = this.add.bind(this)
-  } 
+    this.showMenu = this.showMenu.bind(this)
+  }
+  showMenu(evt) {
+    evt.preventDefault()
+    this.setState((state) => ({ showMenu: !state.showMenu }))
+  }
   add(deed) {
     this.state.data.push(deed)
     this.setState((state) => ({}))
@@ -47,27 +52,62 @@ export default class App extends Component {
     const newData = this.state.data.filter(
       (current) => current.key !== key
     )
-    this.setState((state) => ({data: newData}))
+    this.setState((state) => ({ data: newData }))
   }
   render() {
     return (
-      <div>
+      <HashRouter>
         <nav className="navbar is-light">
           <div className="navbar-brand">
-            <span className="navbar-item is-uppercase">
+            <NavLink // это как гипперссылка на компонент или <a> тэг
+              to='/'
+              className={({ isActive }) =>
+                " navbar-item is-uppercase "
+                + (isActive ? ' is-active ' : '')
+              }>
               Todos
-            </span>
+            </NavLink>
+            <a
+              href="/"
+              className={
+                this.state.showMenu ?
+                  'navbar-burger is-active' : 'navbar-burger'}
+              onClick={this.showMenu}
+            >
+              <span></span>
+              <span></span>
+              <span></span>
+            </a>
+          </div>
+          <div
+            className={this.state.showMenu ?
+              'navbar-menu is-active' : 'navbar-menu'}
+            onClick={this.showMenu}>
+            <div className="navbar-start">
+              <NavLink to='/add'
+                className={({ isActive }) =>
+                  ' navbar-item ' + (isActive ? ' is-active ' : '')}>
+                Создать дело
+              </NavLink>
+            </div>
           </div>
         </nav>
         <main className="content px-6 mt-6">
-          <TodoList
-            list={this.state.data}
-            setDone={this.setDone} 
-            delete ={this.delete}
-          />
-          <TodoAdd add={this.add}/>
+          <Routes>
+            <Route path='/' element={
+              <TodoList
+                list={this.state.data}
+                setDone={this.setDone}
+                delete={this.delete}
+              />
+            } />
+            <Route path='/add' element={
+              <TodoAdd add={this.add} />
+            }
+            />
+          </Routes>
         </main>
-      </div>
+      </HashRouter>
     )
   }
 }
