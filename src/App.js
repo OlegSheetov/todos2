@@ -1,6 +1,7 @@
 import { Component } from "react";
 import TodoList from './TodoList'
 import TodoAdd from './TodoAdd'
+import TodoDetail from './components/TodoDetail/TodoDetail'
 import { HashRouter, Route, Routes, NavLink } from "react-router-dom";
 const date1 = new Date(2021, 7, 19, 14)
 const date2 = new Date(2021, 7, 19, 15, 23)
@@ -32,6 +33,7 @@ export default class App extends Component {
     this.delete = this.delete.bind(this)
     this.add = this.add.bind(this)
     this.showMenu = this.showMenu.bind(this)
+    this.getDeed = this.getDeed.bind(this)
   }
   showMenu(evt) {
     evt.preventDefault()
@@ -41,6 +43,7 @@ export default class App extends Component {
     this.state.data.push(deed)
     this.setState((state) => ({}))
   }
+  
   setDone(key) {
     const deed = this.state.data.find((current) => current.key === key)
     if (deed) {
@@ -53,6 +56,10 @@ export default class App extends Component {
       (current) => current.key !== key
     )
     this.setState((state) => ({ data: newData }))
+  }
+  getDeed(key) {
+    key = +key
+    return this.state.data.find((current)=>current.key === key)
   }
   render() {
     return (
@@ -105,6 +112,10 @@ export default class App extends Component {
               <TodoAdd add={this.add} />
             }
             />
+            <Route path="/:key"
+              element={<TodoDetail getDeed={this.getDeed} />}>
+
+            </Route>
           </Routes>
         </main>
       </HashRouter>
