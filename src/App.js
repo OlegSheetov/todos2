@@ -43,7 +43,7 @@ export default class App extends Component {
     this.state.data.push(deed)
     this.setState((state) => ({}))
   }
-  
+
   setDone(key) {
     const deed = this.state.data.find((current) => current.key === key)
     if (deed) {
@@ -59,7 +59,7 @@ export default class App extends Component {
   }
   getDeed(key) {
     key = +key
-    return this.state.data.find((current)=>current.key === key)
+    return this.state.data.find((current) => current.key === key)
   }
   render() {
     return (
