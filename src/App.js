@@ -3,6 +3,12 @@ import TodoList from './TodoList'
 import TodoAdd from './TodoAdd'
 import TodoDetail from './components/TodoDetail/TodoDetail'
 import { HashRouter, Route, Routes, NavLink } from "react-router-dom";
+
+
+
+
+
+
 const date1 = new Date(2021, 7, 19, 14)
 const date2 = new Date(2021, 7, 19, 15, 23)
 

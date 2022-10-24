@@ -47,7 +47,7 @@ export default class TodoAdd extends Component {
     newDeed.key = date.getTime()
     this.props.add(newDeed)
     this.setState((state) => ({ redirect: true }))
-
+    
   }
   render() {
     if (this.state.redirect) {
