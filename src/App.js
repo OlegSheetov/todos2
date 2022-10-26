@@ -6,9 +6,9 @@ import { HashRouter, Route, Routes, NavLink } from "react-router-dom";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import Register from './components/Register/Register'; 
 import firebaseApp from './firebase'
-
-// TOdo: debug this component. Somehow ...
- 
+import Login from "./components/Login/Login";
+import { login } from "./components/api/api";
+import Logout from "./components/Logout/Logout";
 
 const date1 = new Date(2021, 7, 19, 14)
 const date2 = new Date(2021, 7, 19, 15, 23)
@@ -124,7 +124,15 @@ export default class App extends Component {
                   </NavLink>
                 )
               }
+              {!this.state.currentUser && (
+                <NavLink to='/Login' className={({ isActive }) => 'navbar-item' + (isActive ? 'is-active' : '')}>Войти</NavLink>
+              )}
             </div>
+            {this.state.currentUser && (
+              <div className="navbar-end">
+                <NavLink to='/logout' className={({ isActive }) => 'navbar-item' + (isActive ? 'is-active' : '')}>Выйти</NavLink>
+              </div>
+            )}
           </div>
         </nav>
         <main className="content px-6 mt-6">
@@ -147,6 +155,12 @@ export default class App extends Component {
               element={
                 <Register currentUser={this.state.currentUser}/>}>
             </Route>
+            <Route path="/Login"
+              element={<Login currentUser={this.state.currentUser} />}>
+            </Route>
+            <Route path="/Logout"
+              element={
+                <Logout currentUser={this.state.currentUser}/>}></Route>
           </Routes>
         </main>
       </HashRouter>

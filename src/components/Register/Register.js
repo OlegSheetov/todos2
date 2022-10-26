@@ -25,8 +25,8 @@ export default class Register extends Component {
     const result = await register(this.formData.email, this.formData.password)
     if (typeof result !== 'object') {
       console.log(result);
+      evt.preventDefault()
     }
-    evt.preventDefault()
   }
   render() {
     if (this.props.currentUser) {
@@ -40,14 +40,14 @@ export default class Register extends Component {
             <div className="field">
               <div className="lable">Адрес электроной почты.</div>
               <div className="contol">
-                <input type="email" name="" className='input'
+                <input type="email"  className='input'
                 onChange={this.handleEmailChange}/>
               </div>
             </div>
             <div className="field">
               <div className="lable">Пароль</div>
               <div className="control">
-                <input type="password" name="" className='input' onChange={this.handlePasswordChange} />
+                <input type="password"  className='input' onChange={this.handlePasswordChange} />
               </div>
             </div>
             <div className="field is-grouped is-grouped-right">
