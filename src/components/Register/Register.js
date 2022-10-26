@@ -22,11 +22,11 @@ export default class Register extends Component {
     this.formData.password = evt.target.value;
   }
   async handleFormSubmit(evt) {
-    evt.prewentDefault()
     const result = await register(this.formData.email, this.formData.password)
     if (typeof result !== 'object') {
       console.log(result);
     }
+    evt.preventDefault()
   }
   render() {
     if (this.props.currentUser) {
