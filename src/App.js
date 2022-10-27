@@ -9,6 +9,11 @@ import firebaseApp from './firebase'
 import Login from "./components/Login/Login";
 import { login } from "./components/api/api";
 import Logout from "./components/Logout/Logout";
+import { getList } from "./components/api/api";
+import { setDone } from "./components/api/api";
+import { del } from "./components/api/api";
+
+
 
 const date1 = new Date(2021, 7, 19, 14)
 const date2 = new Date(2021, 7, 19, 15, 23)
@@ -36,10 +41,11 @@ export default class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      data: initialData,
+      data: [],
       showMenu: false,
       currentUser: undefined
     }
+  
     this.setDone = this.setDone.bind(this)
     this.delete = this.delete.bind(this)
     this.add = this.add.bind(this)
@@ -57,25 +63,34 @@ export default class App extends Component {
     this.setState((state) => ({}))
   }
 
-  setDone(key) {
+  async setDone(key) {
+    await setDone(this.state.currentUser , key)
     const deed = this.state.data.find((current) => current.key === key)
     if (deed) {
       deed.done = true
       this.setState((state) => ({}))
     }
   }
-  delete(key) {
+  async delete(key) {
+    await del(this.state.currentUser, key)
     const newData = this.state.data.filter(
       (current) => current.key !== key
     )
     this.setState((state) => ({ data: newData }))
+
   }
   getDeed(key) {
-    key = +key
     return this.state.data.find((current) => current.key === key)
   }
-  authStateChanged(user) {
+  async authStateChanged(user) {
     this.setState((state) => ({ currentUser: user }))
+    if (user) {
+      const newData = await getList(user)
+      this.setState((state) => ({ data: newData}))
+    } 
+    else {
+      this.setState((state)=> ({ data: []}))
+    }
   }
   componentDidMount() {
     onAuthStateChanged(getAuth(firebaseApp), this.authStateChanged)
@@ -145,7 +160,8 @@ export default class App extends Component {
               />
             } />
             <Route path='/add' element={
-              <TodoAdd add={this.add} />
+              <TodoAdd add={this.add}
+                currentUser={this.state.currentUser} />
             }
             />
             <Route path="/:key"
